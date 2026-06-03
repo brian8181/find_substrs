@@ -7,6 +7,7 @@
 #include <getopt.h>
 #include "find_substrs.hpp"
 #include "bash_color.hpp"
+#include "find.hpp"
 
 using std::string;
 using std::cout;
@@ -69,6 +70,33 @@ int parse_options(int argc, char* argv[])
 
 	string path = argv[0];   // get exe file path
 	cout << argv[0] << endl;
+
+	string s = "xyzabcdefg";
+	build_fsm(s);
+    add_substr("abc");
+    add_substr("bcd");
+    add_substr("cde");
+    add_substr("def");
+
+    
+    int pos = search_str(s);
+    if(pos != -1)
+        printf("found substring at pos: %d\n", pos);
+    else
+        printf("no substring found\n");
+
+    int r = s.size();
+    int c = s[0];
+    printf("size: %d, char: %c\n", r, c);   
+
+    for(int i = 0; i < r; ++i)
+    {
+        for(int j = 0; j < c; ++j)
+        {
+            cout << FSM[i][j] << " ";
+        }
+        cout << endl; 
+    }
 
 	return 0;
 }

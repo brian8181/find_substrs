@@ -13,7 +13,6 @@
 #-Wstack-protector -Wstrict-null-sentinel -Wswitch-enum -Wwrite-strings
 
 SHELL:=bash
-
 APP=find_substrs
 CXX=g++
 CXXFLAGS=-Wall -std=c++20 -fPIC
@@ -21,7 +20,6 @@ CXXEXTRA=-Wno-template-body
 CXXCPP=
 LDFLAGS=
 LIBS=
-
 SRC = src
 BLD = build
 OBJ = build
@@ -43,44 +41,42 @@ else
 	LDFLAGS += -lfmt -lcppunit
 endif
 
-all: $(BLD)/find_substrs $(BLD)/libfind_substrs.so $(BLD)/libfind_substrs.a $(BLD)/TEST_find_substrs #
+OBJS=$(OBJ)/main.o $(OBJ)/find_substrs.o $(OBJ)/find.o
 
-$(BLD)/find_substrs: $(OBJ)/main.o $(OBJ)/find_substrs.o
-	 $(CXX) $(CXXFLAGS) $(OBJ)/main.o $(OBJ)/find_substrs.o -o $(BLD)/find_substrs #
+all: $(BLD)/find_substrs #$(BLD)/libfind_substrs.so $(BLD)/libfind_substrs.a $(BLD)/TEST_find_substrs
 
-$(BLD)/libfind_substrs.so: $(OBJ)/main.o $(BLD)/find_substrs.o
-	$(CXX) $(CXXFLAGS) $(CXXEXTRA) --shared $(OBJ)/main.o $(BLD)/find_substrs.o -o $(BLD)/libfind_substrs.so
-	-chmod 755 $(BLD)/libfind_substrs.so
+$(BLD)/find_substrs: $(OBJS)
+	$(CXX) $(CXXFLAGS) $^ -o $@
 
-$(BLD)/libfind_substrs.a: $(OBJ)/main.o $(BLD)/find_substrs.o
-	-ar rvs $(BLD)/libfind_substrs.a $(OBJ)/main.o $(BLD)/find_substrs.o
-	-chmod 755 $(BLD)/libfind_substrs.a
+$(BLD)/libfind_substrs.so: $(OBJS)
+	$(CXX) $(CXXFLAGS) $(CXXEXTRA) --shared $^ -o $@
+	-chmod 755 $@
 
-$(OBJ)/find_substrs.o: $(SRC)/find_substrs.cpp
-	$(CXX) $(CXXFLAGS) $(CXXEXTRA) -c $(SRC)/find_substrs.cpp -o $(OBJ)/find_substrs.o
+$(BLD)/libfind_substrs.a: $(OBJS)
+	-ar rvs $^
+	-chmod 755 $@
 
 $(BLD)/TEST_find_substrs: $(OBJ)/find_substrs.o $(OBJ)/TEST_find_substrs.o
 	$(CXX) $(CXXFLAGS) $^ $(LDFLAGS) -o $@
 
-# rules <?= "\nTEST\n ?>
 # copy header to build dir
 $(BLD)/%.hpp: $(SRC)/%.hpp
 	-cp $^ $@
 
-$(OBJ)/%.o: ./$(SRC)/%.cpp
+$(OBJ)/%.o: $(SRC)/%.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-#
 .PHONY: all clean install unintsall rebuild help
-
 rebuild: clean all
 
 install:
 	cp ./$(BLD)/find_substrs ./$(prefix)/bin/find_substrs
+
 uninstall:
 	-rm ./$(prefix)/bin/find_substrs
+
 clean:
-	@ECHO "removing files ..."
+	@echo "removing files ..."
 	-rm -f $(OBJ)/*
 	-rm -f $(BLD)/*
 
