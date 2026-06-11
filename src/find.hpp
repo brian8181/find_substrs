@@ -7,10 +7,6 @@
 using std::string;
 using std::vector;
 
-/**
- * @name FSM : finite state machine
- */
-vector<vector<int>> FSM;
 
 /**
  * @name FSM : finite state machine

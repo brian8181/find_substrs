@@ -7,7 +7,14 @@ using std::string;
 using std::vector;
 using std::cout;
 using std::endl;
- 
+
+/**
+ * @name FSM : finite state machine
+ */
+static vector<vector<int>> FSM;
+static int size = 0;
+
+
 /**
  * @name FSM : finite state machine
  */
@@ -17,7 +24,10 @@ void build_fsm(const string& s)
     long max_state = 0;
     long cur_state = 0; 
     vector<int> cols(s.begin(), s.end());
-    FSM = vector<vector<int>>(1, vector<int>(256, 0)); // initialize FSM with 1 state (0) and 256 possible transitions (ASCII)
+    cols.insert(cols.begin(), s.size(), 0);
+    //FSM = vector<vector<int>>(1, vector<int>(256, 0)); // initialize FSM with 1 state (0) and 256 possible transitions (ASCII)
+    //FSM.insert(s.size(), cols);
+    FSM.push_back(cols);
 }  
 
 /**
@@ -27,6 +37,9 @@ void build_fsm(const string& s)
  */
 void add_substr(const string& s)
 {
+    //vector<int> cols(s.begin(), s.end());
+    //FMS.insert(FSM.begin(), size, cols);
+
     const char* pstr = s.c_str(); 
     long max_state = 0;
     long cur_state = 0;

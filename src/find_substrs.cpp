@@ -73,6 +73,7 @@ int parse_options(int argc, char* argv[])
 
 	string s = "xyzabcdefg";
 	build_fsm(s);
+	//cout << "rows=" << FSM.size() << endl;
     add_substr("abc");
     add_substr("bcd");
     add_substr("cde");
@@ -88,15 +89,19 @@ int parse_options(int argc, char* argv[])
     int r = s.size();
     int c = s[0];
     printf("size: %d, char: %c\n", r, c);   
-
-    for(int i = 0; i < r; ++i)
-    {
-        for(int j = 0; j < c; ++j)
-        {
-            cout << FSM[i][j] << " ";
-        }
-        cout << endl; 
-    }
+	
+	// r = FSM.size();
+	// cout << "rows=" << r << endl;
+	// for(int i = 0; i < r; ++i)
+    // {
+	// 	c = FSM[i].size();
+	// 	cout << "cols=" << c << endl;
+    //     for(int j = 0; j < c; ++j)
+    //     {
+    //         cout << FSM[i][j] << " ";
+    //     }
+    //     cout << endl; 
+    // }
 
 	return 0;
 }
